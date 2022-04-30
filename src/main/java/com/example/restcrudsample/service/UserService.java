@@ -1,7 +1,7 @@
 package com.example.restcrudsample.service;
 
-import com.example.restcrudsample.exception.UserException;
-import com.example.restcrudsample.exception.UserNotFoundException;
+import com.example.restcrudsample.exception.user.UserException;
+import com.example.restcrudsample.exception.user.UserNotFoundException;
 import com.example.restcrudsample.model.User;
 import com.example.restcrudsample.model.dto.UserDTO;
 import com.example.restcrudsample.model.dto.UserPatchNameDTO;

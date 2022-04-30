@@ -1,4 +1,4 @@
-package com.example.restcrudsample.exception;
+package com.example.restcrudsample.exception.user;
 
 public class UserException extends RuntimeException {
 
