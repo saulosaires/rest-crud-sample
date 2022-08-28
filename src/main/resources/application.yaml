@@ -12,3 +12,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+server:
+  port: 8081
+logstash:
+  host: localhost
+  port: 50000
