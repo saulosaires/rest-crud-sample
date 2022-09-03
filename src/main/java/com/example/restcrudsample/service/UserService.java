@@ -7,7 +7,7 @@ import com.example.restcrudsample.model.dto.UserPatchNameDTO;
 public interface UserService {
     User create(UserDTO userDTO);
 
-    User retreive(Long id);
+    User retrieve(Long id);
 
     User update(Long id, UserDTO userDTO);
 

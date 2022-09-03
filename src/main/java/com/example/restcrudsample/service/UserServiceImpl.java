@@ -22,10 +22,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
-    public User retreive(Long id) {
+    public User retrieve(Long id) {
 
         validateId(id);
-        log.info("retreive user {}", keyValue("userId", id));
+        log.info("retrieve user {}", keyValue("userId", id));
 
         Optional<User> optUser = userRepository.findById(id);
 
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
         if (!StringUtils.hasText(userPatchNameDTO.getName()))
             throw new BusinessException("User Name can not be Empty");
 
-        User user = retreive(id);
+        User user = retrieve(id);
         user.setId(id);
         user.setName(userPatchNameDTO.getName());
 

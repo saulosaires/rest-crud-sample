@@ -38,7 +38,7 @@ public class UserServiceTest {
 
         given(userRepository.findById(any())).willReturn(Optional.of(new User()));
 
-        User user = userService.retreive(1L);
+        User user = userService.retrieve(1L);
 
         assertThat(user).isNotNull();
 
@@ -48,7 +48,7 @@ public class UserServiceTest {
     @Test
     public void given_invalid_id_should_throw_exception() {
 
-        BusinessException thrown = Assertions.assertThrows(BusinessException.class, () -> userService.retreive(0L));
+        BusinessException thrown = Assertions.assertThrows(BusinessException.class, () -> userService.retrieve(0L));
 
         Assertions.assertEquals("Id can not be less or equals to Zero", thrown.getMessage());
 
