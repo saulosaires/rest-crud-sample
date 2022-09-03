@@ -15,7 +15,7 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/{id}")
-    public User retreive(@PathVariable Long id, @RequestHeader("user-request") String userRequest) {
+    public User retreive(@PathVariable Long id) {
         return userService.retreive(id);
     }
 

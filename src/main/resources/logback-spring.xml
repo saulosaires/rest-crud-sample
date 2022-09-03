@@ -4,22 +4,33 @@
 <configuration scan="true">
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
+    <springProperty name="logstash_console" source="logstash.console"/>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n</pattern>
         </encoder>
     </appender>
-    <springProperty name="logstash_host" source="logstash.host"/>
-    <springProperty name="logstash_port" source="logstash.port"/>
-    <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <param name="Encoding" value="UTF-8"/>
-        <destination>${logstash_host}:${logstash_port}</destination>
-
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
-    </appender>
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="logstash"/>
     </root>
+
+
+    <springProperty name="logstash_enable" source="logstash.enable"/>
+    <if condition='"${logstash_enable}".equals("true")'>
+        <then>
+            <springProperty name="logstash_host" source="logstash.host"/>
+            <springProperty name="logstash_port" source="logstash.port"/>
+            <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+                <param name="Encoding" value="UTF-8"/>
+                <destination>${logstash_host}:${logstash_port}</destination>
+
+                <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+            </appender>
+            <root level="INFO">
+                <appender-ref ref="logstash"/>
+            </root>
+        </then>
+    </if>
+
 
 </configuration>

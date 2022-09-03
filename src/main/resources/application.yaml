@@ -17,3 +17,4 @@ server:
 logstash:
   host: localhost
   port: 50000
+  enable: true

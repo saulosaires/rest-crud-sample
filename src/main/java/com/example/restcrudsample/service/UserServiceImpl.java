@@ -7,13 +7,17 @@ import com.example.restcrudsample.model.dto.UserDTO;
 import com.example.restcrudsample.model.dto.UserPatchNameDTO;
 import com.example.restcrudsample.model.mapper.UserMapper;
 import com.example.restcrudsample.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
+import static net.logstash.logback.argument.StructuredArguments.keyValue;
+
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
@@ -21,6 +25,7 @@ public class UserServiceImpl implements UserService {
     public User retreive(Long id) {
 
         validateId(id);
+        log.info("retreive user {}", keyValue("userId", id));
 
         Optional<User> optUser = userRepository.findById(id);
 
@@ -34,9 +39,11 @@ public class UserServiceImpl implements UserService {
 
         validateDTO(userDTO);
 
-        User user = UserMapper.INSTANCE.dtoToUser(userDTO);
+        User user = userRepository.save(UserMapper.INSTANCE.dtoToUser(userDTO));
 
-        return userRepository.save(user);
+        log.info("created user {}", keyValue("userId", user.getId()));
+
+        return user;
     }
 
     public User update(Long id, UserDTO userDTO) {
@@ -44,10 +51,11 @@ public class UserServiceImpl implements UserService {
         validateId(id);
         validateDTO(userDTO);
 
-        User user = UserMapper.INSTANCE.dtoToUser(userDTO);
-        user.setId(id);
+        User user = userRepository.save(UserMapper.INSTANCE.parse(id, userDTO));
 
-        return userRepository.save(user);
+        log.info("updated user {}", keyValue("userId", user.getId()));
+
+        return user;
     }
 
     public User patch(Long id, UserPatchNameDTO userPatchNameDTO) {
@@ -61,7 +69,11 @@ public class UserServiceImpl implements UserService {
         user.setId(id);
         user.setName(userPatchNameDTO.getName());
 
-        return userRepository.save(user);
+        userRepository.save(user);
+
+        log.info("patched user {} {}", keyValue("userId", user.getId()), keyValue("userName", user.getName()));
+
+        return user;
     }
 
     public void delete(Long id) {
@@ -71,6 +83,8 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException(id);
 
         userRepository.delete(optUser.get());
+
+        log.info("deleted user {}", keyValue("userId", id));
     }
 
     private void validateDTO(UserDTO userDTO) {
